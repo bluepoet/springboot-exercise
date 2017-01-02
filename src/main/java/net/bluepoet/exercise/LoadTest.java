@@ -18,7 +18,7 @@ public class LoadTest {
         ExecutorService es = Executors.newFixedThreadPool(100);
 
         RestTemplate rt = new RestTemplate();
-        String url = "http://localhost:8080/dr";
+        String url = "http://localhost:8080/rest?idx={idx}";
 
         CyclicBarrier barrier = new CyclicBarrier(101);
 
@@ -32,10 +32,10 @@ public class LoadTest {
                 StopWatch sw = new StopWatch();
                 sw.start();
 
-                rt.getForObject(url, String.class);
+                String res = rt.getForObject(url, String.class, idx);
 
                 sw.stop();
-                log.info("Elapsed: {} {}" + idx, sw.getTotalTimeSeconds());
+                log.info("Elapsed: {} {} / {}", idx, sw.getTotalTimeSeconds(), res);
                 return null;
             });
         }
